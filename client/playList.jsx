@@ -16,7 +16,6 @@ class PlayList extends React.Component {
   }
 
   componentDidMount() {
-    console.log('mounted inside playlist');
     socket.on('new track', (track) => {
       this.handleNewTrack(track);
     });
