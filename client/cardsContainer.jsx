@@ -24,7 +24,7 @@ class CardsContainer extends React.Component {
     return (
       <div className="cardsContainer">
         {this.props.tracks.map((track) =>
-          <Card onClick={() => {this.props.handleCardPlay(track); this.handleBuildPlaylist(track); }}
+          <Card onClick={() => this.handleBuildPlaylist(track)}
             key={track.contentId}
             className={ClassNames(style['card'])}
             style={{ width: '350px', height: '300px', margin: '15px' }}

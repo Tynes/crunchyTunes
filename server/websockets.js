@@ -5,7 +5,7 @@ module.exports = (server) => {
     socket.on('add track', (track) => {
       console.log(track);
       // emit to everybody-new track
-      socket.broadcast.emit('new track', track);
+      socket.emit('new track', track);
     });
   });
 };
