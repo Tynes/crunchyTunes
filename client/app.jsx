@@ -33,10 +33,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    socket.on('test', (data) => {
-      console.log(data);
-    });
-
     const self = this;
     queryAll({ query: 'Kanye',
       })
