@@ -4,8 +4,9 @@ module.exports = (server) => {
     userData: [],
   };
 
-
   var io = require('socket.io')(server);
+
+
   var sessionData = require('./playListData.js');
 
   io.on('connection', (socket) => {
