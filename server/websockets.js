@@ -1,22 +1,21 @@
 module.exports = (server) => {
-  var sessionData = {
-    mood: 100,
-    userData: [],
-  };
+
 
   var io = require('socket.io')(server);
-
-
-  var sessionData = require('./playListData.js');
+  var sessionData = require('./sessionData.js');
 
   io.on('connection', (socket) => {
     socket.on('add track', (track) => {
-      // emit to everybody-new track
       // sessionData is a server side data store
       sessionData.tracks.push(track);
-      console.log(sessionData);
-      // send sessionData
-      socket.emit('new track', track);
+
+      socket.emit('new track', sessionData.tracks);
+      socket.broadcast.emit('new track', sessionData.tracks);
+    });
+    socket.on('track play', (playing) => {
+      sessionData.currentTrack = playing;
+      socket.emit('update track', sessionData.currentTrack);
+      socket.broadcast.emit('update track', sessionData.currentTrack);
     });
 
     socket.on('add user', (username) => {
@@ -24,8 +23,12 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-      sessionData.userData.push({ userName: username, userId: socket.id, role: 'pleeb', mood: 1 });
-      console.log(sessionData);
+      sessionData.userData.push({
+        userName: username,
+        userId: socket.id,
+        role: 'pleeb',
+        mood: 0,
+      });
     });
   });
 };

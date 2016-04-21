@@ -3,13 +3,9 @@ import Nav from './nav.js';
 import SongPlayer from './songplayer.jsx';
 import CardsContainer from './cardsContainer.jsx';
 import AppBar from 'react-toolbox/lib/app_bar';
-import Navigation from 'react-toolbox/lib/navigation';
 import queryAll from './queryAll.js';
-import _ from 'underscore';
-import Button from 'react-toolbox/lib/button';
-import io from 'socket.io-client';
 import PlayList from './playList.jsx';
-import { Layout, NavDrawer, Panel, Sidebar } from 'react-toolbox';
+import { Layout, NavDrawer, Panel } from 'react-toolbox';
 import socket from './websockets.js';
 import LoginModal from './LoginModal.jsx';
 
@@ -42,6 +38,9 @@ class App extends React.Component {
         { username: user.username,
           userId: socket.id });
     });
+    socket.on('update track', (track) => {
+      this.handleCardPlay(track);
+    });
 
     const self = this;
     queryAll({ query: 'Kanye',
@@ -62,7 +61,7 @@ class App extends React.Component {
 
   handleSearch(value) {
     const self = this;
-    if(value === null) {
+    if (value === null) {
       this.setState({
         searching: false,
       });

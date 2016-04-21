@@ -16,17 +16,19 @@ class PlayList extends React.Component {
   }
 
   componentDidMount() {
-    socket.on('new track', (track) => {
-      this.handleNewTrack(track);
+    socket.on('new track', (tracks) => {
+      this.handleNewTrack(tracks);
     });
   }
 
-  handleNewTrack(track) {
-    let updatedState = this.state.tracks.slice();
-    updatedState.push(track);
-    this.setState({ tracks: updatedState });
-    console.log(this.state);
+  handleNewTrack(tracks) {
+    this.setState({ tracks: tracks });
   }
+
+  handleTrackEmit(track) {
+    socket.emit('track play', track);
+  }
+
 
   render() {
     return (
@@ -36,7 +38,7 @@ class PlayList extends React.Component {
           <ListItem
             caption={`${track.songTitle}\n${track.creator}`}
             avatar={track.imagePath}
-            onClick={() => this.props.handleCardPlay(track)}
+            onClick={() => this.handleTrackEmit(track)}
           />
         )}
       </List>
