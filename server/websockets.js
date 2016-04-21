@@ -3,11 +3,13 @@ module.exports = (server) => {
 
   var io = require('socket.io')(server);
   var sessionData = require('./sessionData.js');
+  var dataMethods = require('./dataMethods.js');
 
   io.on('connection', (socket) => {
     socket.on('add track', (track) => {
       // sessionData is a server side data store
       sessionData.tracks.push(track);
+      dataMethods.setRemovalInHalfHour(track, sessionData.tracks);
 
       socket.emit('new track', sessionData.tracks);
       socket.broadcast.emit('new track', sessionData.tracks);
