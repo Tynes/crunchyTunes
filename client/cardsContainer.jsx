@@ -6,7 +6,6 @@ import style from './styles/toolbox-theme';
 
 import socket from './websockets.js';
 
-
 class CardsContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +26,7 @@ class CardsContainer extends React.Component {
           <Card onClick={() => this.handleBuildPlaylist(track)}
             key={track.contentId}
             className={ClassNames(style['card'])}
-            style={{ width: '350px', height: '300px', margin: '15px' }}
+            style={{ width: '250px', height: '200px', margin: '15px' }}
           >
             <div className={ClassNames(style['image-container'])}>
               <CardTitle
