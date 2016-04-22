@@ -5,6 +5,7 @@ module.exports = (server) => {
   var dataMethods = require('./dataMethods.js');
 
   io.on('connection', (socket) => {
+    var user;
     socket.on('add track', (track) => {
       // sessionData is a server side data store
       dataMethods.addToStore(track, sessionData.tracks);
@@ -30,12 +31,17 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-      dataMethods.addToStore({
+      user = {
         userName: username,
         userId: socket.id,
         role: 'pleeb',
         mood: 0,
-      }, sessionData.userData);
+      };
+      dataMethods.addToStore(user, sessionData.userData);
+    });
+
+    socket.on('disconnect', () => {
+      dataMethods.removeFromStore(user, sessionData.userData);
     });
   });
 };
