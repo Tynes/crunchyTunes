@@ -1,6 +1,5 @@
 module.exports = (server) => {
 
-
   var io = require('socket.io')(server);
   var sessionData = require('./sessionData.js');
   var dataMethods = require('./dataMethods.js');
@@ -8,7 +7,7 @@ module.exports = (server) => {
   io.on('connection', (socket) => {
     socket.on('add track', (track) => {
       // sessionData is a server side data store
-      sessionData.tracks.push(track);
+      dataMethods.addToStore(track, sessionData.tracks);
       dataMethods.setRemovalInHalfHour(track, sessionData.tracks);
 
       socket.emit('new track', sessionData.tracks);
@@ -18,6 +17,10 @@ module.exports = (server) => {
       sessionData.currentTrack = playing;
       socket.emit('update track', sessionData.currentTrack);
       socket.broadcast.emit('update track', sessionData.currentTrack);
+      // then delete track from playlist
+      dataMethods.removeFromStore(playing, sessionData.tracks);
+      socket.emit('remove from playlist', sessionData.tracks);
+      socket.broadcast.emit('remove from playlist', sessionData.tracks);
     });
 
     socket.on('add user', (username) => {
@@ -25,12 +28,12 @@ module.exports = (server) => {
       socket.emit('user joined', {
         username: socket.username,
       });
-      sessionData.userData.push({
+      dataMethods.addToStore({
         userName: username,
         userId: socket.id,
         role: 'pleeb',
         mood: 0,
-      });
+      }, sessionData.userData);
     });
   });
 };

@@ -19,6 +19,9 @@ class PlayList extends React.Component {
     socket.on('new track', (tracks) => {
       this.handleNewTrack(tracks);
     });
+    socket.on('remove from playlist', (tracks) => {
+      this.setState({ tracks: tracks });
+    });
   }
 
   handleNewTrack(tracks) {
