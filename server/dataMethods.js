@@ -3,13 +3,13 @@ var EventEmitter = require('events');
 var socket = require('./websockets.js');
 
 var dataMethods = {
-  setRemovalInHalfHour: function (track, tracks, callback) {
-    setTimeout(function() {
+  setRemovalInHalfHour: (track, tracks, callback) => {
+    setTimeout(() => {
       dataMethods.removeFromStore(track, tracks);
       callback();
     }, 1800000);
   },
-  removeFromStore: function(itemToRemove, store) {
+  removeFromStore: (itemToRemove, store) => {
     for (var i = 0; i < store.length; i++) {
       if (_.isEqual(store[i], itemToRemove)) {
         store.splice(i, 1);
@@ -17,7 +17,7 @@ var dataMethods = {
       }
     }
   },
-  addToStore: function(itemToAdd, store) {
+  addToStore: (itemToAdd, store) => {
     if (Array.isArray(store)) {
       store.push(itemToAdd);
     } else {
@@ -27,9 +27,3 @@ var dataMethods = {
 };
 
 module.exports = dataMethods;
-
-// 1800000 - half hour
-// maybe use a setInterval instead to clean out songs
-// the setTimeOut sets an expired property to true
-// the setInterval checks for any that have expired and removes them
-// this could enable auto-deletion of songs
