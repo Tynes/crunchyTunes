@@ -8,7 +8,9 @@ module.exports = (server) => {
     socket.on('add track', (track) => {
       // sessionData is a server side data store
       dataMethods.addToStore(track, sessionData.tracks);
-      dataMethods.setRemovalInHalfHour(track, sessionData.tracks);
+      dataMethods.setRemovalInHalfHour(track, sessionData.tracks, function () {
+        socket.emit('remove from playlist', sessionData.tracks);
+      });
 
       socket.emit('new track', sessionData.tracks);
       socket.broadcast.emit('new track', sessionData.tracks);

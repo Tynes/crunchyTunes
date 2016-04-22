@@ -1,9 +1,12 @@
 var _ = require('lodash');
+var EventEmitter = require('events');
+var socket = require('./websockets.js');
 
 var dataMethods = {
-  setRemovalInHalfHour: function (track, tracks) {
+  setRemovalInHalfHour: function (track, tracks, callback) {
     setTimeout(function() {
       dataMethods.removeFromStore(track, tracks);
+      callback();
     }, 1800000);
   },
   removeFromStore: function(itemToRemove, store) {
