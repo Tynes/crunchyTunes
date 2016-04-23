@@ -32,7 +32,6 @@ class PlayList extends React.Component {
     socket.emit('track play', track);
   }
 
-
   render() {
     return (
       <List selectable ripple className="list">
