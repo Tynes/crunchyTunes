@@ -37,10 +37,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-<<<<<<< HEAD
-    socket.on('test', (data) => {
-      console.log(data);
-=======
     socket.on('user joined', (user) => {
       this.setState(
         { username: user.username,
@@ -48,7 +44,6 @@ class App extends React.Component {
     });
     socket.on('update track', (track) => {
       this.handleCardPlay(track);
->>>>>>> c395082bcc774aeb308988f097b6399e8bfbcafd
     });
 
     const self = this;
